@@ -1,6 +1,6 @@
 import abc
 
-class Position(object, metaclass=abs.ABCMeta):
+class Position(object, metaclass=abc.ABCMeta):
         
     def element(self):
         """Element at the given position"""
@@ -11,9 +11,8 @@ class Position(object, metaclass=abs.ABCMeta):
     def __ne__(self, other):
         return not (self == other)
 
-class AbstractTree(object, metaclass=abc.ABCMeta):
-    
 
+class AbstractTree(object, metaclass=abc.ABCMeta):
     
     def root(self):
         """Return root element position"""
@@ -39,3 +38,13 @@ class AbstractTree(object, metaclass=abc.ABCMeta):
     
     def is_empty(self):
         return len(self) == 0
+    
+    def _height(self, p):
+        if self.is_leaf(p):
+            return 0
+        return 1 + max(self._height(c) for c in self.children(p))
+    
+    def height(self, p=None):
+        if p is None:
+            p = self.root()
+        return self._height(p)
